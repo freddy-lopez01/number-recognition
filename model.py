@@ -57,8 +57,13 @@ def train(epoch):
         correct += pred.eq(target.view_as(pred)).sum().item()
 
 
+        curr_batch = batch_index * len(data)
+        overall_size = len(loaders['train'].dataset)
+        curr_frac = 100. * curr_batch
+
+
         if batch_index % 20 == 0:
-            print(f"train epoch: {epoch} [{batch_index * len(data)}/{len(loaders['train'].dataset)} ({100.*batch_index/len(loaders['train']):.0f}%)]\t{loss.item():.6f}")
+            print(f"train epoch: {epoch} [{curr_batch}/{overall_size}  ({curr_frac}%)]\t{loss.item():.6f}")
 
     avg_loss = total_loss / len(loaders['train'].dataset)
     accuracy = 100. * correct / len(loaders['train'].dataset)
