@@ -12,8 +12,6 @@ To run this project, you need the following libraries:
 
 You can install the required packages using pip:
 
-```bash
-``` pip install torch torchvision matplotlib numpy ```
 
 
 ## Training Approach 
