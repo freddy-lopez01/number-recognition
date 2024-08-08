@@ -1,0 +1,10 @@
+torch.Size([60000])
+torch.Size([60000, 28, 28])
+torch.Size([10000, 28, 28])
+tensor([5, 0, 4,  ..., 5, 6, 8])
+{'train': <torch.utils.data.dataloader.DataLoader object at 0x13152a480>, 'test': <torch.utils.data.dataloader.DataLoader object at 0x12fbda300>}
+torch.Size([60000])
+torch.Size([60000, 28, 28])
+torch.Size([10000, 28, 28])
+tensor([5, 0, 4,  ..., 5, 6, 8])
+{'train': <torch.utils.data.dataloader.DataLoader object at 0x1689008c0>, 'test': <torch.utils.data.dataloader.DataLoader object at 0x168d03470>}
