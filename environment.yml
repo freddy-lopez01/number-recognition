@@ -1,0 +1,16 @@
+name: base
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - conda==24.3.0
+  - setuptools
+  - pip
+  - wheel
+  - conda-content-trust
+  - conda-libmamba-solver
+  - menuinst
+  - python.app
+  - pytorch
+  - torchvision
+prefix: /Users/freddylopez/miniconda3
