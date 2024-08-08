@@ -12,6 +12,8 @@ Testing dataset consists of 10,000 28x28 pixels images also with no RGB color va
 
 Images classes consist of the images with the numbers 1-9  
 
+# Results 
 
+After training the model over 11 epochs, the model reulted in having a maximum accuracy of 98% and training accuracy of about 93%. The overall loss during training was around 0.0155 over 10 epochs. Testing overall loss was less than 0.0150 over 10 epochs
 
 
