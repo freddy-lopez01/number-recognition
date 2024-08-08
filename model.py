@@ -5,11 +5,14 @@ import torch.nn as nn
 import torch.nn.functional as F 
 import torch.optim as optim
 import torch 
-import pandas
 import numpy
 import matplotlib.pyplot as plt
+import logging 
 
-
+train_losses = []
+train_accuracies = []
+test_losses = []
+test_accuracies = []
 
 class CNN(nn.Module):
     
@@ -39,7 +42,8 @@ class CNN(nn.Module):
 
 def train(epoch):
     model.train() # set the model into training mode
-    
+    correct = 0
+    total_loss = 0
     for batch_index, (data, target) in enumerate(loaders['train']):
         data, target = data.to(device), target.to(device) # make sure all the data is going to the same device
         optimizer.zero_grad()
@@ -48,12 +52,23 @@ def train(epoch):
         loss.backward()
         optimizer.step()
 
+        total_loss += loss.item()
+        pred = output.argmax(dim=1, keepdim=True)
+        correct += pred.eq(target.view_as(pred)).sum().item()
+
+
         if batch_index % 20 == 0:
             print(f"train epoch: {epoch} [{batch_index * len(data)}/{len(loaders['train'].dataset)} ({100.*batch_index/len(loaders['train']):.0f}%)]\t{loss.item():.6f}")
 
+    avg_loss = total_loss / len(loaders['train'].dataset)
+    accuracy = 100. * correct / len(loaders['train'].dataset)
+    train_losses.append(avg_loss)
+    train_accuracies.append(accuracy)
+    print(f"Train Epoch: {epoch} - Average Loss: {avg_loss:.4f}, Accuracy: {accuracy:.2f}%")
+
+
 def test():
     model.eval()
-
     test_loss = 0
     correct = 0
 
@@ -66,6 +81,9 @@ def test():
             correct += pred.eq(target.view_as(pred)).sum().item()
 
     test_loss /= len(loaders['test'].dataset)
+    accuracy = 100. * correct / len(loaders['test'].dataset)
+    test_losses.append(test_loss)
+    test_accuracies.append(accuracy)
     print(f"\nTest set: Average loss: {test_loss:.4f}, Accuracy: {correct}/{len(loaders['test'].dataset)} ({100. * correct / len(loaders['test'].dataset):.0f}%\n)")
 
 
@@ -120,9 +138,33 @@ if __name__ == "__main__":
         train(epoch)
         test()
 
+    epochs = range(1, 11)
+
+    plt.figure(figsize=(12, 5))
+
+    # Plot Loss
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs, train_losses, 'g', label='Training loss')
+    plt.plot(epochs, test_losses, 'b', label='Test loss')
+    plt.title('Loss over epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+
+    # Plot Accuracy
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs, train_accuracies, 'g', label='Training accuracy')
+    plt.plot(epochs, test_accuracies, 'b', label='Test accuracy')
+    plt.title('Accuracy over epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy (%)')
+    plt.legend()
+
+    plt.show()
+
     model.eval()
 
-    data, target = test_data[0]
+    data, target = test_data[4]
 
     data = data.unsqueeze(0).to(device)
 
