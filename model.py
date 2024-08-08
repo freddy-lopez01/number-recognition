@@ -59,11 +59,11 @@ def train(epoch):
 
         curr_batch = batch_index * len(data)
         overall_size = len(loaders['train'].dataset)
-        curr_frac = 100. * curr_batch
+        curr_frac = 100. * curr_batch / overall_size
 
 
         if batch_index % 20 == 0:
-            print(f"train epoch: {epoch} [{curr_batch}/{overall_size}  ({curr_frac}%)]\t{loss.item():.6f}")
+            print(f"train epoch: {epoch} [{curr_batch}/{overall_size}  ({curr_frac:.1f}%)]\t{loss.item():.6f}")
 
     avg_loss = total_loss / len(loaders['train'].dataset)
     accuracy = 100. * correct / len(loaders['train'].dataset)
@@ -89,7 +89,7 @@ def test():
     accuracy = 100. * correct / len(loaders['test'].dataset)
     test_losses.append(test_loss)
     test_accuracies.append(accuracy)
-    print(f"\nTest set: Average loss: {test_loss:.4f}, Accuracy: {correct}/{len(loaders['test'].dataset)} ({100. * correct / len(loaders['test'].dataset):.0f}%\n)")
+    print(f"\nTest set: Average loss: {test_loss:.4f}, Accuracy: {correct}/{len(loaders['test'].dataset)} ({accuracy:.0f}%\n)")
 
 
 train_data = datasets.MNIST(
